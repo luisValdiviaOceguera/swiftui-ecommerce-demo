@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    let image1 = UIImage(named: "Commerce-logo")
     var body: some View {
+        MainTabView()
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Image("commerce-logo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200)
+            
         }
         .padding()
     }

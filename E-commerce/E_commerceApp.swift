@@ -11,7 +11,9 @@ import SwiftUI
 struct E_commerceApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .preferredColorScheme(.light)
+            //MainTabView()
         }
     }
 }
