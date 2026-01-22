@@ -8,32 +8,29 @@
 import SwiftUI
 
 struct HomeView: View {
+
+    let onGoToCatalog: () -> Void
     @StateObject private var viewModel = HomeViewModel()
 
     var body: some View {
         BaseScaffoldView {
-            NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 24) {
                     ForEach(viewModel.sections) { section in
-                        HomeSectionFactory(section: section,onBannerTap: {
-                            viewModel.goToCatalog()
-                        })
-                        Spacer()
+                        HomeSectionFactory(
+                            section: section,
+                            onBannerTap: {
+                                onGoToCatalog()
+                            }
+                        )
                     }
                 }
                 .padding()
-                
             }
             .task {
                 await viewModel.loadHome()
             }
-            .navigationDestination(isPresented: $viewModel.showCatalog) {
-                ProductListView()
-                    .navigationBarBackButtonHidden(true)
-                
-            }
         }
     }
-    }
 }
+

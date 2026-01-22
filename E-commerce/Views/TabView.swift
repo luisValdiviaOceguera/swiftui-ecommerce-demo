@@ -16,17 +16,38 @@ enum TabItem: Hashable {
 struct MainTabView: View {
 
     @State private var selectedTab: TabItem = .home
+    @State private var lastSelectedTab: TabItem = .home
+    @State private var buyRoute: BuyRoute = .root
+    
+    var tabSelection: Binding<TabItem> {
+        Binding(
+            get: { selectedTab },
+            set: { newValue in
+                if newValue == .buy && selectedTab == .buy {
+                    // 👆 el usuario tocó el tab Buy estando ya en Buy
+                    buyRoute = .root
+                }
+                selectedTab = newValue
+            }
+        )
+    }
+
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: tabSelection) {
 
-            HomeTab(selectedTab: $selectedTab)
-                .tabItem {
-                    Label("Home", systemImage: "house")
+            HomeTab(
+                onGoToCatalog: {
+                    buyRoute = .productList
+                    selectedTab = .buy
                 }
-                .tag(TabItem.home)
+            )
+            .tabItem {
+                Label("Home", systemImage: "house")
+            }
+            .tag(TabItem.home)
 
-            BuyTab()
+            BuyTab(route: buyRoute)
                 .tabItem {
                     Label("Buy", systemImage: "bag")
                 }
@@ -44,31 +65,88 @@ struct MainTabView: View {
                 }
                 .tag(TabItem.profile)
         }
+        
     }
 }
+
+
+
+
 
 
 
 struct HomeTab: View {
 
-    @Binding var selectedTab: TabItem
+    let onGoToCatalog: () -> Void
 
     var body: some View {
-           NavigationStack {
-               HomeView()
-           }
-       }
+        NavigationStack {
+            HomeView(onGoToCatalog: onGoToCatalog)
+        }
+    }
 }
+
+
+
 
 
 
 struct BuyTab: View {
+
+    let route: BuyRoute
+    @State private var path = NavigationPath()
+
     var body: some View {
-        BaseScaffoldView {
-            Text("Buy")
+        NavigationStack(path: $path) {
+
+            content
+                .navigationDestination(for: BuyRoute.self) { route in
+                    switch route {
+                    case .root:
+                        BuyView()
+
+                    case .productList:
+                        ProductListView()
+
+                    case .productDetail(let id):
+                       // ProductDetailView(productId: id)
+                        ProductListView()
+                    }
+                }
+        }
+        .onChange(of: route) { newRoute in
+            path.removeLast(path.count)
+
+            // 🚨 solo empujamos si NO es root
+            if newRoute != .root {
+                path.append(newRoute)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch route {
+        case .root:
+            BaseScaffoldView {
+                BuyView()
+            }
+
+        case .productList:
+            BaseScaffoldView {
+                ProductListView()
+            }
+
+        default:
+            BaseScaffoldView {
+                BuyView()
+            }
         }
     }
 }
+
+
+
 
 
 struct FavoritesTab: View {
@@ -86,4 +164,9 @@ struct ProfileTab: View {
             Text("Profile")
         }
     }
+}
+enum BuyRoute: Hashable {
+    case root
+    case productList
+    case productDetail(id: String)
 }
