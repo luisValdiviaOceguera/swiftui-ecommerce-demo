@@ -11,6 +11,7 @@ struct HomeView: View {
 
     let onGoToCatalog: () -> Void
     @StateObject private var viewModel = HomeViewModel()
+    let onProductTap: (String) -> Void
 
     var body: some View {
         BaseScaffoldView {
@@ -21,7 +22,7 @@ struct HomeView: View {
                             section: section,
                             onBannerTap: {
                                 onGoToCatalog()
-                            }
+                            }, onProductTap: onProductTap
                         )
                     }
                 }

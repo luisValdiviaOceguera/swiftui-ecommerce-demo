@@ -11,6 +11,7 @@ struct CarouselView: View {
 
     let title: String?
     let section: CarouselSection
+    let onProductTap: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -26,7 +27,7 @@ struct CarouselView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(section.items) { product in
-                        ProductCardView(product: product)
+                        ProductCardView(product: product, onProductTap:onProductTap)
                     }
                 }
                 .padding(.horizontal)

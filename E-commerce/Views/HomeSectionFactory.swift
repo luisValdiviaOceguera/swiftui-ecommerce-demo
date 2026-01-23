@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeSectionFactory: View {
     let section: HomeSection
     let onBannerTap: () -> Void
+    let onProductTap: (String) -> Void
 
     var body: some View {
         switch section.items {
@@ -23,7 +24,8 @@ struct HomeSectionFactory: View {
         case .carousel(let model):
             CarouselView(
                         title: section.title,
-                        section: model
+                        section: model,
+                        onProductTap: onProductTap
                     )
 
         case .categoryGrid(let model):

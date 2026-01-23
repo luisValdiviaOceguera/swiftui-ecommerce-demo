@@ -9,6 +9,7 @@ struct ProductCardView: View {
 
     let product: Product
     private let imageSize: CGFloat = 140
+    let onProductTap: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -39,6 +40,9 @@ struct ProductCardView: View {
                     EmptyView()
                 }
             }
+            .onTapGesture {
+                            onProductTap(product.id ?? "")
+                        }
 
             // Name
             Text(product.name)
@@ -53,6 +57,10 @@ struct ProductCardView: View {
                     .fontWeight(.bold)
             }
         }
-        .frame(width: imageSize)
+        .padding()
+                .frame(maxWidth: .infinity) 
+                .background(Color(.systemBackground))
+                .cornerRadius(16)
+                .shadow(radius: 2)
     }
 }

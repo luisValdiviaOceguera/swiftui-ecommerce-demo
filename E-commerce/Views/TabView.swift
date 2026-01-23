@@ -40,6 +40,9 @@ struct MainTabView: View {
                 onGoToCatalog: {
                     buyRoute = .productList
                     selectedTab = .buy
+                }, onProductTap: { id in
+                    buyRoute = .productDetail(id: id)
+                    selectedTab = .buy
                 }
             )
             .tabItem {
@@ -78,10 +81,11 @@ struct MainTabView: View {
 struct HomeTab: View {
 
     let onGoToCatalog: () -> Void
+    let onProductTap: (String) -> Void
 
     var body: some View {
         NavigationStack {
-            HomeView(onGoToCatalog: onGoToCatalog)
+            HomeView(onGoToCatalog: onGoToCatalog, onProductTap: onProductTap)
         }
     }
 }
@@ -98,26 +102,26 @@ struct BuyTab: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-
             content
                 .navigationDestination(for: BuyRoute.self) { route in
                     switch route {
-                    case .root:
-                        BuyView()
-
                     case .productList:
-                        ProductListView()
+                        ProductListView { productId in
+                                path.append(BuyRoute.productDetail(id: productId))
+                            }
 
                     case .productDetail(let id):
-                       // ProductDetailView(productId: id)
-                        ProductListView()
+                        ProductDetailView(productId: id){id in 
+                            path.append(BuyRoute.productDetail(id: id))
+                        }
+
+                    default:
+                        EmptyView()
                     }
                 }
         }
         .onChange(of: route) { newRoute in
             path.removeLast(path.count)
-
-            // 🚨 solo empujamos si NO es root
             if newRoute != .root {
                 path.append(newRoute)
             }
@@ -126,24 +130,16 @@ struct BuyTab: View {
 
     @ViewBuilder
     private var content: some View {
-        switch route {
-        case .root:
-            BaseScaffoldView {
-                BuyView()
-            }
-
-        case .productList:
-            BaseScaffoldView {
-                ProductListView()
-            }
-
-        default:
-            BaseScaffoldView {
-                BuyView()
-            }
+        BaseScaffoldView {
+            BuyView(
+                onLeafCategoryTap: {
+                    path.append(BuyRoute.productList)
+                }
+            )
         }
     }
 }
+
 
 
 

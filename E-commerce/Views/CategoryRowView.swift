@@ -9,18 +9,25 @@ import SwiftUI
 struct CategoryRowView: View {
 
     let category: Category
+    let onLeafTap: () -> Void
 
     var body: some View {
-        if let children = category.children {
+        if let children = category.children, !children.isEmpty {
             DisclosureGroup(category.name) {
                 ForEach(children) { child in
-                    CategoryRowView(category: child)
-                        .padding(.leading, 8)
+                    CategoryRowView(
+                        category: child,
+                        onLeafTap: onLeafTap
+                    )
+                    .padding(.leading, 8)
                 }
             }
         } else {
-            Text(category.name)
-                .padding(.vertical, 4)
+            Button {
+                onLeafTap()
+            } label: {
+                Text(category.name)
+            }
         }
     }
 }

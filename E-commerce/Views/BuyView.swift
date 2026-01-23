@@ -10,14 +10,18 @@ struct BuyView: View {
 
     @StateObject private var viewModel = BuyViewModel()
 
+    let onLeafCategoryTap: () -> Void
+
     var body: some View {
         List {
             ForEach(viewModel.categories) { category in
-                CategoryRowView(category: category)
+                CategoryRowView(
+                    category: category,
+                    onLeafTap: onLeafCategoryTap
+                )
             }
         }
         .listStyle(.insetGrouped)
-        //navigationTitle("Comprar")
         .task {
             await viewModel.loadCategories()
         }

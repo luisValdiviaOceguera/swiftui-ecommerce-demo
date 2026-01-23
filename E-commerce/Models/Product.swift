@@ -19,7 +19,20 @@ struct Product: Decodable, Identifiable {
     let department: Department?
     let category: ProductCategory?
     let brand: Brand?
+    
+    let description: String?
+    let images: [String]?
+    let specifications: [ProductSpecification]?
+    let recommendations:CarouselSection?
+    let newProducts:CarouselSection?
 }
 struct ProductsResponse: Decodable {
     let products: [Product]
+}
+
+
+struct ProductSpecification: Decodable, Identifiable {
+    let id = UUID()
+    let title: String
+    let value: String
 }

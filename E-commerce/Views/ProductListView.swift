@@ -7,9 +7,16 @@
 
 import SwiftUI
 
+enum ProductLayout {
+    case grid
+    case list
+}
+
 struct ProductListView: View {
 
     @StateObject private var viewModel = ProductListViewModel()
+    @State private var layout: ProductLayout = .grid
+    let onProductTap: (String) -> Void
 
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -39,11 +46,21 @@ struct ProductListView: View {
 
                         // 🎛 Filtros
                         VStack(alignment: .leading, spacing: 8) {
-
+                            HStack(spacing: 16) {
+                                
                             Text("Filtrar por")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-
+                                
+                                Spacer()
+                                
+                            Button {
+                                    layout = layout == .grid ? .list : .grid
+                                } label: {
+                                    Image(systemName: layout == .grid ? "list.bullet" : "square.grid.2x2")
+                                        .font(.title3)
+                                }
+                            }
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 12) {
                                     ForEach(Department.allCases, id: \.self) { department in
@@ -60,11 +77,22 @@ struct ProductListView: View {
                         }
 
                         // 🛍 Grid de productos
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(viewModel.products) { product in
-                                ProductCardView(product: product)
+                        Group {
+                            if layout == .grid {
+                                LazyVGrid(columns: columns, spacing: 16) {
+                                    ForEach(viewModel.products) { product in
+                                        ProductCardView(product: product, onProductTap: onProductTap)
+                                    }
+                                }
+                            } else {
+                                LazyVStack(spacing: 16) {
+                                    ForEach(viewModel.products) { product in
+                                        ProductRowView(product: product, onProductTap: onProductTap)
+                                    }
+                                }
                             }
                         }
+
                     }
                     .padding()
                 }
@@ -77,6 +105,4 @@ struct ProductListView: View {
     }
 }
 
-#Preview {
-    ProductListView()
-}
+
