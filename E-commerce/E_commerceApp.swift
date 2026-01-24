@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct E_commerceApp: App {
+    @StateObject private var appViewModel = AppViewModel()
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environmentObject(appViewModel)
                 .preferredColorScheme(.light)
             //MainTabView()
         }

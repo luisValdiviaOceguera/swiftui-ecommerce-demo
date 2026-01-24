@@ -33,8 +33,10 @@ final class AppViewModel: ObservableObject {
     }
 
     func logout() {
+        print("LOGOUT → route before:", route)
         sessionManager.clearSession()
         route = .login
+        print("LOGOUT → route after:", route)
     }
 }
 

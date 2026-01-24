@@ -8,20 +8,23 @@
 import SwiftUI
 
 struct RootView: View {
-    @StateObject private var appViewModel = AppViewModel()
+
+    @EnvironmentObject private var appViewModel: AppViewModel
 
     var body: some View {
         switch appViewModel.route {
         case .splash:
-            SplashView(viewModel: appViewModel)
+            SplashView()
+                .onAppear {
+                    appViewModel.startApp()
+                }
 
         case .login:
-            LoginView(appViewModel: appViewModel)
+            LoginView()
 
         case .home:
-           // HomeView(viewModel: appViewModel)
-           // HomeView()
             MainTabView()
         }
     }
 }
+

@@ -4,6 +4,8 @@
 //
 //  Created by Luis Manuel Valdivia Oceguera on 1/12/26.
 //
+import Foundation
+
 enum Department: String, Decodable, CaseIterable {
     case electronics
     case fashion

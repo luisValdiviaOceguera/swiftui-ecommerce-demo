@@ -4,6 +4,11 @@
 //
 //  Created by Luis Manuel Valdivia Oceguera on 12/31/25.
 //
+import Foundation
+
+struct homeResponse: Decodable {
+    let sections: [HomeSection]
+}
 
 struct HomeSection: Decodable, Identifiable {
     let id: String

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SplashView: View {
-    let viewModel: AppViewModel
+    @EnvironmentObject private var viewModel: AppViewModel
 
     var body: some View {
         VStack {

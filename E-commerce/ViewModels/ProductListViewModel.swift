@@ -10,7 +10,8 @@ internal import Combine
 
 @MainActor
 final class ProductListViewModel: ObservableObject {
-
+    let userName = "Luis Manuel"
+    let userEmail = "luis@email.com"
     // Productos
     @Published private(set) var products: [Product] = []
     private var allProducts: [Product] = []

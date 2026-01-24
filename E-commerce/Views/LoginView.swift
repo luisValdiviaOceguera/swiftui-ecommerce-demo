@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-
-    let appViewModel: AppViewModel
+    @EnvironmentObject private var appViewModel: AppViewModel
     @StateObject private var viewModel = LoginViewModel()
     @State private var appear = false
 
@@ -82,5 +81,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(appViewModel: AppViewModel())
+    LoginView()
 }

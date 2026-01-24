@@ -148,7 +148,7 @@ struct BuyTab: View {
 struct FavoritesTab: View {
     var body: some View {
         BaseScaffoldView {
-            Text("Favorites")
+            FavoritesView()
         }
     }
 }
@@ -157,7 +157,7 @@ struct FavoritesTab: View {
 struct ProfileTab: View {
     var body: some View {
         BaseScaffoldView {
-            Text("Profile")
+            ProfileView()
         }
     }
 }
