@@ -22,6 +22,7 @@ struct HomeSectionFactory: View {
                     ).ignoresSafeArea(.container, edges: .horizontal)
 
         case .carousel(let model):
+            Spacer()
             CarouselView(
                         title: section.title,
                         section: model,
@@ -31,6 +32,13 @@ struct HomeSectionFactory: View {
         case .categoryGrid(let model):
             CategoryGridView(title: section.title,
                              section: model)
+        
+        case .video(let model):
+            if let videoName = model.items.first?.video {
+                LoopingVideoView(videoName: videoName)
+                    .frame(height: 150)
+                    .clipped()
+            }
             
         }
     }

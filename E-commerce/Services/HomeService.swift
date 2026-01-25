@@ -21,6 +21,14 @@ let mockHomeJSON = """
 {
   "sections": [
     {
+      "id": "0",
+      "componentType": "video",
+      "title": "blackFriday",
+      "items": [
+        { "image": "blackFriday" }
+      ]
+    },
+    {
       "id": "1",
       "componentType": "banner",
       "title": "Ofertas del día",

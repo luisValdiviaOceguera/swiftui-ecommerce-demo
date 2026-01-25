@@ -26,7 +26,8 @@ struct HomeView: View {
                         )
                     }
                 }
-                .padding()
+                .ignoresSafeArea(.container, edges: .horizontal)
+                
             }
             .task {
                 await viewModel.loadHome()

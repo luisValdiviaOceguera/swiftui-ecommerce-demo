@@ -36,6 +36,9 @@ struct HomeSection: Decodable, Identifiable {
         case .staticGrid:
             let categories = try container.decode([Product].self, forKey: .items)
             items = .categoryGrid(CategoryGridSection(items: categories))
+        case .video:
+            let videoItems = try container.decode([VideoItem].self, forKey: .items)
+            items = .video(VideoSection(items: videoItems))
         }
     }
 }
@@ -44,6 +47,7 @@ enum ComponentType: String, Decodable {
     case banner
     case carousel
     case staticGrid = "static"
+    case video
 }
 
 
@@ -51,6 +55,7 @@ enum SectionData {
     case banner(BannerSection)
     case carousel(CarouselSection)
     case categoryGrid(CategoryGridSection)
+    case video(VideoSection)
 }
 
 
@@ -73,6 +78,17 @@ struct CategoryGridSection: Decodable {
     
 }
 
+struct VideoSection: Decodable {
+    let items: [VideoItem]
+}
+
+struct VideoItem: Decodable {
+    let video: String
+
+    enum CodingKeys: String, CodingKey {
+        case video = "image"
+    }
+}
 
 
 
