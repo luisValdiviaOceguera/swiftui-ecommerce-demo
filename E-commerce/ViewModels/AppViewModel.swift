@@ -27,6 +27,9 @@ final class AppViewModel: ObservableObject {
             self.route = self.sessionManager.isLoggedIn ? .home : .login
         }
     }
+    func islogged() -> Bool{
+        return self.sessionManager.isLoggedIn
+    }
 
     func loginSuccess() {
         route = .home
@@ -37,6 +40,10 @@ final class AppViewModel: ObservableObject {
         sessionManager.clearSession()
         route = .login
         print("LOGOUT → route after:", route)
+    }
+    
+    func continueAsGuest() {
+        self.route = .home
     }
 }
 

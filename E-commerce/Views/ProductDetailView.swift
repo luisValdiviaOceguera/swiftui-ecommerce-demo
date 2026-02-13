@@ -12,38 +12,54 @@ struct ProductDetailView: View {
     @StateObject private var viewModel = ProductDetailViewModel()
     private let imageSize: CGFloat = 140
     let onProductTap: (String) -> Void
+    @State private var isFavorite: Bool = false
+
 
     var body: some View {
         ScrollView {
             if let product = viewModel.product {
                 VStack(alignment: .leading, spacing: 16) {
-
-                    // Imagen principal
-                    AsyncImage(url: URL(string: product.image ?? "")) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(maxWidth: .infinity, minHeight: 320)
-
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(maxWidth: .infinity, minHeight: 320)
-                                .clipped()
-
-                        case .failure:
-                            Color.gray
-                                .frame(maxWidth: .infinity, minHeight: 320)
-                                .overlay(
-                                    Image(systemName: "photo")
-                                        .font(.largeTitle)
-                                        .foregroundColor(.white)
-                                )
-
-                        @unknown default:
-                            EmptyView()
+                    ZStack(alignment: .topTrailing) {
+                        // Imagen principal
+                        AsyncImage(url: URL(string: product.image ?? "")) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(maxWidth: .infinity, minHeight: 320)
+                                
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(maxWidth: .infinity, minHeight: 320)
+                                    .clipped()
+                                
+                            case .failure:
+                                Color.gray
+                                    .frame(maxWidth: .infinity, minHeight: 320)
+                                    .overlay(
+                                        Image(systemName: "photo")
+                                            .font(.largeTitle)
+                                            .foregroundColor(.white)
+                                    )
+                                
+                            @unknown default:
+                                EmptyView()
+                            }
                         }
+                        Button {
+                                withAnimation(.easeInOut) {
+                                    isFavorite.toggle()
+                                }
+                            } label: {
+                                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                    .font(.system(size: 24, weight: .semibold))
+                                    .foregroundColor(isFavorite ? .red : .white)
+                                    .padding(12)
+                                    .background(Color.black.opacity(0.35))
+                                    .clipShape(Circle())
+                            }
+                            .padding(16)
                     }
 
                     // Nombre y precio

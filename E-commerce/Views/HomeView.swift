@@ -12,11 +12,21 @@ struct HomeView: View {
     let onGoToCatalog: () -> Void
     @StateObject private var viewModel = HomeViewModel()
     let onProductTap: (String) -> Void
+    @EnvironmentObject private var appViewModel: AppViewModel
+    @State private var showLoginSheet = false
+
 
     var body: some View {
         BaseScaffoldView {
             ScrollView {
                 LazyVStack(spacing: 24) {
+                    if !appViewModel.islogged(){
+                        GuestSignupView(
+                                    onSignInTap: {
+                                        showLoginSheet = true
+                                                }
+                                        )
+                    }
                     ForEach(viewModel.sections) { section in
                         HomeSectionFactory(
                             section: section,
@@ -32,6 +42,11 @@ struct HomeView: View {
             .task {
                 await viewModel.loadHome()
             }
+            .sheet(isPresented: $showLoginSheet) {
+                LoginView()
+                    .presentationDetents([.medium])
+            }
+
         }
     }
 }

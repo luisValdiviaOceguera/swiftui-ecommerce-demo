@@ -11,6 +11,8 @@ struct LoginView: View {
     @EnvironmentObject private var appViewModel: AppViewModel
     @StateObject private var viewModel = LoginViewModel()
     @State private var appear = false
+    @Environment(\.dismiss) private var dismiss
+
 
     var body: some View {
         VStack(spacing: 20) {
@@ -52,6 +54,7 @@ struct LoginView: View {
                 viewModel.login { success in
                     if success {
                         appViewModel.loginSuccess()
+                        dismiss()
                     }
                 }
             } label: {
@@ -66,7 +69,16 @@ struct LoginView: View {
             .buttonStyle(.borderedProminent)
             .disabled(!viewModel.isFormValid || viewModel.isLoading)
             .opacity(viewModel.isFormValid ? 1 : 0.6)
-
+            
+            Button {
+                appViewModel.continueAsGuest() 
+                dismiss()
+            } label: {
+                Text("Continue as Guest")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.top, 8)
             Spacer()
         }
         .opacity(appear ? 1 : 0)
