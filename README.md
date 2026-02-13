@@ -71,3 +71,15 @@ iOS Developer with experience in:
   - Clean, maintainable code
   - Real-world app structure
   - This project is part of my professional portfolio.
+
+## 📸 Screenshots
+
+<p float="left">
+  <img src="screenshots/home1.jpeg" width="200" />
+  <img src="screenshots/home2.jpeg" width="200" />
+  <img src="screenshots/productList1.jpeg" width="200" />
+  <img src="screenshots/productList2.jpeg" width="200" />
+  <img src="screenshots/profile.jpeg" width="200" />
+  <img src="screenshots/productDetail1.jpeg" width="200" />
+   <img src="screenshots/productDetail2.jpeg" width="200" />
+</p>
